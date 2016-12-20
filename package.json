@@ -1,21 +1,18 @@
 {
-  "name": "grunt-usemin",
-  "version": "3.1.1",
+  "name": "grunt-usemin-enhanced",
+  "version": "0.2.1",
   "license": "BSD-2-Clause",
-  "author": "Yeoman",
-  "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views)",
+  "author": "Exception",
+  "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views),support cdn",
   "keywords": [
     "gruntplugin",
     "usemin",
-    "yeoman",
     "html",
     "css",
-    "optimize"
+    "optimize",
+    "cdn"
   ],
-  "repository": "yeoman/grunt-usemin",
-  "scripts": {
-    "test": "grunt test"
-  },
+  "repository": "pocketdigi/grunt-usemin-enhanced",
   "dependencies": {
     "chalk": "^1.1.1",
     "debug": "^2.1.3",
@@ -29,7 +26,12 @@
     "grunt-jscs": "^1.6.0",
     "grunt-mocha-cli": "^1.13.0",
     "mkdirp": "^0.5.0",
-    "rimraf": "^2.3.2"
+    "rimraf": "^2.3.2",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-filerev": "^2.3.1"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"

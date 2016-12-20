@@ -137,8 +137,19 @@ module.exports = function (grunt) {
 
         grunt.verbose.writeln(chalk.bold('Processing as ' + options.type.toUpperCase() + ' - ') + chalk.cyan(filename));
 
-        // Our revved version locator
-        var content = handler.process(filename, options.assetsDirs);
+        // 递归子目录
+        var assetsDirs={};
+
+        options.assetsDirs.forEach(function (dir) {
+            assetsDirs[dir]='';
+            grunt.file.recurse(dir, function (abspath, rootdir, subdir, filename) {
+                assetsDirs[rootdir+'/'+subdir]='';
+            })
+        });
+        var arr = Object.keys(assetsDirs).map(function (key) { return key; });
+
+
+        var content = handler.process(filename, arr,options.base);
 
         // write the new content to disk
         grunt.file.write(filename, content);

@@ -3,47 +3,79 @@
 module.exports = function (grunt) {
   grunt.initConfig({
 
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      core: {
-        src: ['lib/**/*.js', 'tasks/*.js']
-      },
-      test: {
-        src: ['test/**/*.js', '!test/temp/**/*.js', '!test/fixtures/*.js']
+    //清空目录
+    clean: {
+      src: "dist"
+    },
+    copy: {
+      static: {
+        expand: true,
+        cwd: 'src',
+        src: ['**/*'],
+        dest: 'dist'
       }
     },
-
-    jscs: {
-      options: {
-        config: '.jscsrc'
+    useminPrepare: {
+      html: {
+        html: '**/*.html',
+        options: {
+          root: 'web/src/main/webapp/dist',
+          dest: 'web/src/main/webapp/dist'
+        }
       },
-      gruntfile: {
-        src: '<%= jshint.gruntfile.src %>'
-      },
-      core: {
-        src: '<%= jshint.core.src %>'
-      },
-      test: {
-        src: '<%= jshint.test.src %>'
+      js: {
+        js: '**/*.js',
+        options: {
+          root: 'dist',
+          dest: 'dist'
+        }
       }
     },
+    filerev: {
+      options: {
+        algorithm: 'md5',
+        length: 8
+      },
+      all: {
+        src: ['dist/**/*', '!dist/**/*.html']
+      }
+    },
+    usemin: {
+      html: ['dist/**/*.html'],
+      js: ['dist/**/*.js'],
+      css: ['dist/**/*.css'],
+      options: {
+        base: '//static.pocketdigi.com/medicine/',
+        patterns: {
+          js: [
+            [/([\w+?\/]*[\w+?]\.js)/gm, 'Replacing reference js'],
+            [/([\w+?\/]*[\w+?]\.css)/gm, 'Replacing reference css'],
+            [/([\w+?\/]*[\w+?]\.jpg)/gm, 'Replacing reference jpg'],
+          ]
+        },
+        assetsDirs: ['dist']
+      }
 
-    mochacli: {
-      all: ['test/test-*.js']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-filerev');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', ['jshint', 'jscs', 'mochacli']);
   grunt.registerTask('test', 'default');
+  grunt.registerTask('dev', [
+    'clean',
+    'copy',
+    'useminPrepare',
+    'filerev',
+    'usemin'
+  ]);
 };

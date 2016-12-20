@@ -1,15 +1,13 @@
-# grunt-usemin [![Linux Build Status](https://img.shields.io/travis/yeoman/grunt-usemin/master.svg?style=flat&label=Linux%20build)](https://travis-ci.org/yeoman/grunt-usemin) [![Windows Build status](https://img.shields.io/appveyor/ci/addyosmani/grunt-usemin/master.svg?style=flat&label=Windows%20build)](https://ci.appveyor.com/project/addyosmani/grunt-usemin/branch/master)
-[![Gitter](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/yeoman/yeoman)
+# grunt-usemin-enhanced
 
 > Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
+fork from [grunt-usemin](https://github.com/yeoman/grunt-usemin)
 
-## Important
 
-3.1.0 has a breaking change with `uglify` step renamed to `uglify` to be consistent with `grunt-contrib-uglify` task which name is `uglify` (and not `uglifyjs`).
+## Enhancement
 
-Stick to 3.0.0 while we find a good solution to not have a breaking change while having name consistency.
-
-## [Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)
+- `Options.assetsDirs` will recursive sub director to find suitable file,so you must use filerev or keep all files has a different name.
+- CDN support.Now you can use `options.base` set a cdn server, it will replace all resource to files on cdn.You must upload your resource to CDN by yourself or use ftp_push etc.
 
 ## Notice
 
@@ -378,6 +376,23 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 
 ### Options
 
+
+#### base
+
+Type: `string`  
+Default: null, CDN disabled.
+
+Example:
+
+```js
+ options: {
+        base: '//static.pocketdigi.com/'
+      }
+```
+
+Replace your local file to cdn link.Suppose your src is `images/a.jpg`,the result will be `//static.pocketdigi.com/images/a.jpg`
+
+
 #### assetsDirs
 
 Type: `array`  
@@ -419,7 +434,9 @@ usemin: {
     assetsDirs: 'images',
     patterns: {
       js: [
-        [/(image\.png)/, 'Replacing reference to image.png']
+        [/([\w+?\/]*[\w+?]\.js)/gm, 'Replacing reference  js'],
+        [/([\w+?\/]*[\w+?]\.css)/gm, 'Replacing reference  css'],
+        [/([\w+?\/]*[\w+?]\.jpg)/gm, 'Replacing reference  jpg'],
       ]
     }
   }
